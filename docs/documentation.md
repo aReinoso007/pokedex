@@ -1,22 +1,16 @@
-# **Java - Technical Interview Exercise**
+# Pokedex coding practice
 
-## ++**Project Overview**++
+## Project overview
 
-The objective of this exercise is the creation of a RESTful API leveraging Java and Spring Boot. You are expected to employ Clean Architecture and TDD methodologies to build a robust solution backed by a reliable data store. 
+I built this as a coding practice: a RESTful API in Java and Spring Boot, using Clean Architecture and TDD, backed by a relational database, plus a React frontend that consumes it.
 
-Implementation must be guided by the specific Pokemon user stories detailed hereafter; these requirements should be clearly integrated into your final interview presentation. 
+The Pokemon user stories below are the scope I worked through. The service talks to PokeAPI for data retrieval, then replicates entries locally so they can be extended and edited.
 
-This service will interface with the PokeAPI to facilitate data retrieval, local replication, and attribute modification for various Pokemon entries. 
+PokeAPI reference: [https://pokeapi.co/docs/v2](https://pokeapi.co/docs/v2) 
 
-Refer to the official PokeAPI documentation for integration details: 
+## Requirements
 
-++[https://pokeapi.co/docs/v2](https://pokeapi.co/docs/v2)++ 
-
-## ++**Requirements**++
-
-
-
-### **Functional Requirements**
+### Functional requirements
 
 - **PokeAPI Integration** 
   - Construct a RESTful API using Spring Boot that communicates with the external PokeAPI.
@@ -34,11 +28,9 @@ Refer to the official PokeAPI documentation for integration details:
 
 
 
-### **Technical Requirements**
+### Technical requirements
 
-
-
-#### **● Mandatory**
+#### Mandatory
 
 - Host the code in a public Git repository 
 - Include tests 
@@ -64,42 +56,31 @@ Refer to the official PokeAPI documentation for integration details:
 
 
 
-### **Frontend**
+### Frontend
 
-- While the primary emphasis resides in backend proficiency, a comprehensive demonstration of **full-stack development capabilities** is required. Consequently: 
-  - Integrate your established backend service with a modern frontend framework of your choosing (React with TS with TailwindCss, TanStack Query) 
-  - Primary Evaluation Criteria: 
-    - The interface must exhibit responsiveness and a user-centric design.
-    - Execute standard CRUD operations corresponding to the defined functional use cases. 
-    - Architectural integrity: Maintain clean component organization and efficient state management.
-- Submission Guidelines: 
-  - Provide a comprehensive **README** detailing environment configuration and pertinent technical documentation. 
-  - The application should be pre-populated with seeded data or mock credentials for demonstration purposes.
+The backend is the main focus. I still wanted a full-stack practice, so the API is consumed by a React + TypeScript app (Tailwind CSS, TanStack Query):
 
+- A responsive, usable interface.
+- The same create, read, update, and delete flows as the user stories.
+- Clear component structure and straightforward state management.
 
+The README covers how to run it, and the app starts with seeded Pokemon plus a demo account.
 
-### **Delivery**
+### Delivery
 
-- Provide a README file containing environment setup procedures and technical documentation. 
-- The solution must be pre-populated with relevant demonstration data. 
-- Supply a Dockerfile for containerized execution.
+- README with setup and technical notes.
+- Seeded demonstration data.
+- A Dockerfile so the app can run in a container.
 
+### Generative AI
 
+As part of the same practice I wrote up how I would prompt a coding agent for a small task-management API, and how I actually used one on this Pokedex. The write-up is in [`genai.md`](genai.md).
 
-### **Generative AI tools**
+The task API I used as the prompt example supports:
 
-Imagine you’re tasked with generating a **RESTful API** for a simple **task management system** using your preferred language. The system should support the following functionality: 
+- Create, read, update, and delete tasks
+- Each task has a `title`, `description`, `status`, and `due_date`
+- Tasks belong to a user
 
-- Create, read, update, and delete tasks (CRUD) 
-- Each task has a `title` , `description` , `status` , and `due_date` 
-- Tasks are associated with a user (assume basic User model exists)
-
-Instructions: 
-
-- Using your preferred **GenAI coding tool** (e.g., Cursor, Claude Code, Windsurf, GitHub Copilot, etc.), write the **prompt you would use** to generate the API scaffold or full implementation. 
-- Show the **output code** (or a representative sample of it). 
-- Describe how you: 
-  - Validated the AI's suggestions 
-  - Corrected or improved the output, if necessary 
-  - Handled edge cases, authentication, or validations
+The notes cover the prompt, a sample of the output, and how I checked, corrected, and handled edge cases, authentication, and validation.
 

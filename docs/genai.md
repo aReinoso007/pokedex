@@ -1,6 +1,6 @@
-# GenAI exercise - Task management API
+# GenAI notes - Task management API
 
-> Prepared answer for the "Generative AI tools" section of the brief. The prompt is written for Cursor (agent mode) but works with any GenAI coding tool. The code below is a **representative sample** of what such a prompt produces, not a file that ships in this repository. Adjust the "what I corrected" section to match your own session before presenting.
+> How I would prompt a generative coding tool for a small API, and how I actually used one on this Pokedex. The prompt is tool-agnostic (I used it with Cursor’s agent mode; the same structure works as a Claude Code task or a CLAUDE.md). The code below is a representative excerpt of the output, not a file that ships in this repository. Section 6 is the real log of how this Pokedex was built.
 
 ## 1. The prompt
 
@@ -123,7 +123,7 @@ void userCannotReadSomeoneElsesTask() {
 
 ## 4. What I corrected or improved
 
-Typical problems in first-pass AI output, and the fix applied:
+Mistakes I check for in every first-pass AI output (several of them also showed up while building this repo, see section 6):
 
 1. **Entities leaked through controllers.** Replaced with response records so the API contract is independent of the schema.
 2. **Ownership checked in the controller (or not at all).** Moved into the use case with a repository query `findByIdAndOwnerId`, so no code path can forget it.
@@ -148,9 +148,9 @@ This section is the real story of the Pokedex project, not a template. Tool: Cur
 
 ### 6.1 Context first, then a plan
 
-1. I converted the exercise PDF to Markdown and deleted everything that was not needed for the coding task, so the agent only sees requirements and not noise.
-2. I opened the agent in **Plan mode** and gave it one prompt: *"I want to tackle the following exercise described in @documentation.md, check it out and generate a plan to achieve this. I want a mono-repo with the name ballastlane-tech-exercise. I have already scaffolded the Java application, check that all is good and well."*
-3. The agent reviewed my scaffold and asked two questions that were mine to decide: which relational database (I chose PostgreSQL) and the repo layout (a new `ballastlane-tech-exercise` folder, copying only the useful parts of my scaffold and leaving the old folder untouched).
+1. I wrote the practice scope down as Markdown and deleted everything that was not needed for the coding task, so the agent only sees requirements and not noise.
+2. I opened the agent in **Plan mode** and gave it one prompt: *"I want to tackle the coding practice described in @documentation.md, check it out and generate a plan to achieve this. I want a mono-repo for this Pokedex. I have already scaffolded the Java application, check that all is good and well."*
+3. The agent reviewed my scaffold and asked two questions that were mine to decide: which relational database (I chose PostgreSQL) and the repo layout (a new project folder, copying only the useful parts of my scaffold and leaving the old folder untouched).
 4. I reviewed the plan and approved it with explicit rules: implement it as written, do not edit the plan file, work through the existing to-do list in order, and do not stop until every item is done.
 
 ### 6.2 Implementation loop

@@ -12,7 +12,7 @@ const loginOk = http.post(`${API}/auth/login`, async ({ request }) => {
   if (body.username === 'demo' && body.password === 'Demo1234!') {
     return HttpResponse.json({
       token: 'jwt-token', tokenType: 'Bearer', expiresAt: new Date(Date.now() + 3_600_000).toISOString(),
-      user: { id: 1, username: 'demo', email: 'demo@ballastlane.dev', role: 'USER' },
+      user: { id: 1, username: 'demo', email: 'demo@example.com', role: 'USER' },
     })
   }
   return HttpResponse.json({ detail: 'Invalid username or password' }, { status: 401 })

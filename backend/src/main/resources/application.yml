@@ -42,7 +42,7 @@ app:
     demo-user:
       enabled: ${SEED_DEMO_USER:true}
       username: demo
-      email: demo@ballastlane.dev
+      email: demo@example.com
       password: Demo1234!
 
 management:

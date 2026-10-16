@@ -32,7 +32,7 @@ flowchart LR
     Config --> UseCases
 ```
 
-The rule "source code dependencies only point inwards" is not just a convention: [`ArchitectureTest`](../backend/src/test/java/com/ballastlane/pokedex/ArchitectureTest.java) fails the build when
+The rule "source code dependencies only point inwards" is not just a convention: [`ArchitectureTest`](../backend/src/test/java/dev/pokedex/ArchitectureTest.java) fails the build when
 `domain` or `application` import Spring/Jakarta/Jackson, or when `application` touches `infrastructure`/`web`, or when `web` and `infrastructure` depend on each other.
 
 ## Request flows
@@ -125,7 +125,7 @@ erDiagram
 | Cache on the HTTP client (not the adapter) | `@Cacheable` works through Spring proxies, so it sits on a bean called from another bean | Caches raw JSON, not domain objects |
 | JSON mapped manually (`JsonNode`) | PokeAPI payloads are huge, we need ~10 fields; avoids dozens of DTO classes | Mapper tests with fixtures protect against upstream changes |
 | JWT stateless auth, BCrypt hashes | No server session, easy to scale; passwords never stored in clear | No token revocation (short-lived tokens, 2h) |
-| Local API requires auth, catalog is public | Matches "protected versus public routes" in the brief | - |
+| Local API requires auth, catalog is public | Catalog browsing stays open; saving and editing stay behind login | - |
 | Pagination is capped (50 remote / 100 local) | Prevents expensive fan-out calls to PokeAPI | Clients must page |
 | 502 for upstream failures | Makes it obvious the fault is not the client's | Internal error details are logged, not returned |
 | Frontend uses same-origin `/api` (Vite proxy, nginx proxy) | No CORS in dev or Docker | CORS is still configured for direct calls |

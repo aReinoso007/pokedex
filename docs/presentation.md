@@ -1,13 +1,13 @@
-# Presentation notes
+# Walkthrough notes
 
-Target: ~20 min presentation + code review Q&A. Screen share: GitHub repo and IDE, then the running app.
+About 20 minutes to show the practice, then questions. Screen share: the repository and the IDE, then the running app.
 
-## Evaluation criteria -> where to show it
+## What to show
 
 | Criterion | Evidence |
 | --- | --- |
 | Clean Architecture | `backend/src/main/java/.../{domain,application,infrastructure,web}`, `ArchitectureTest`, `docs/architecture.md` |
-| Testing / TDD | Tests were written before the implementation in each step (domain, application, adapters, web); commits group a test suite with the code that makes it pass, `./gradlew test` (153 tests, Testcontainers), `npm test` (59 tests), JaCoCo report |
+| Testing / TDD | Test-first where it mattered most (domain rules, PokemonNameMatcher, tag spelling rule); each layer’s commit groups its test suite with the code that makes it pass. ./gradlew test (153 tests, Testcontainers), npm test (59 tests), JaCoCo report |
 | Code quality | Small use-case classes, self-validating `Pokemon`, consistent problem+json, no controller logic |
 | Functionality | Live demo script below, no browser console warnings |
 | Presentation | This outline |
@@ -41,18 +41,24 @@ Target: ~20 min presentation + code review Q&A. Screen share: GitHub repo and ID
 
 ## Likely questions and answers
 
-- **Why Clean Architecture for a small API?** The exercise is about demonstrating separation: the domain and use cases are testable without Spring or a database, and swapping PokeAPI or Postgres means writing a new adapter. Cost: some wiring boilerplate.
+- **Why Clean Architecture for a small API?** I wanted the domain and use cases testable without Spring or a database, and swapping PokeAPI or Postgres means writing a new adapter. Cost: some wiring boilerplate.
 - **Why are use cases not annotated with `@Service`?** To keep `application` free of framework imports; `UseCaseConfig` is the composition root and ArchUnit enforces it.
 - **Where does validation live?** Shape validation (required, sizes) in request DTOs for fast, field-level feedback; business invariants in `Pokemon`; the same violations surface as 400.
 - **PUT vs PATCH?** PUT replaces all editable fields (omitted custom fields are cleared); PATCH only touches what is sent and rejects an empty body.
 - **Why is a Pokemon's id the PokeAPI id?** Natural, stable key; makes sync idempotent (409 on duplicate) and avoids a mapping table.
 - **Caching details?** Caffeine, 1h TTL, per-resource caches (`pokeapi-page|pokemon|species|evolution`). Errors are never cached. For multiple instances, swap for Redis behind the same `@Cacheable` annotations.
 - **What happens when PokeAPI is down?** `CatalogUnavailableException` -> 502 with a generic message (details logged); cached data still serves.
-- **Security gaps / next steps?** Refresh tokens and revocation, rate limiting on login, account lockout, roles beyond `USER`, per-user local collections (today the local store is shared by all authenticated users, matching the brief's single local dataset), HTTPS termination in front of nginx.
-- **Per-user data?** The brief describes a shared local replica plus a user management API; I kept the replica global. Adding `owner_id` to `pokemon` and scoping queries is the natural extension.
+- **Security gaps / next steps?** Refresh tokens and revocation, rate limiting on login, account lockout, roles beyond `USER`, per-user local collections (today the local store is shared by all authenticated users, which matches the single shared dataset in the practice scope), HTTPS termination in front of nginx.
+- **Per-user data?** The scope is a shared local replica plus a user management API; I kept the replica global. Adding `owner_id` to `pokemon` and scoping queries is the natural extension.
 - **Concurrency?** Sync relies on the PK; a race returns 409 through `DataIntegrityViolationException` handling. Optimistic locking (`@Version`) would be the next step for concurrent edits.
 - **How did you use AI and how do you know it was right?** See `docs/genai.md`: tests first, architecture rules in the prompt, ArchUnit and integration tests as guard-rails, deliberate breakage to prove tests can fail, manual security review.
 - **Performance of the list endpoint?** 2 upstream calls per item, run in parallel on a bounded pool and cached; first cold page is the slow one. Possible improvement: pre-warm or persist a catalog snapshot.
+- **Transaction boundary?** `@Transactional` lives on the adapters because `application` is framework-free, so `UpdateLocalPokemon` reads and saves in two transactions: concurrent PATCHes can lose an update. Fix: `@Version` optimistic locking, or a `TransactionTemplate` decorator wired in `UseCaseConfig`.
+- **Login timing?** When the username does not exist, BCrypt is skipped, so response time can reveal valid usernames. Fix: compare against a dummy hash.
+- **Deleted user's token?** Still valid until expiry; the role comes from the claim. Short lifetime (2h) limits it; revocation list or DB check is the next step.
+- **Cache stampede / multiple instances?** Caffeine is per-instance and `@Cacheable` is not `sync = true`, so concurrent cold requests duplicate upstream calls. Fix: `sync = true` + Redis.
+- **Fan-out robustness?** `join()` has no timeout and one failing Pokemon fails the page. Fix: `orTimeout` per future and degrade that item; Java 21 virtual threads instead of a fixed pool.
+- **Monitoring / deployment?** Today only `/actuator/health` and CI tests. Next: Micrometer + Prometheus, alerts on 502 rate and p95 latency, CI publishing the image and deploying.
 
 ## Known limitations (be upfront)
 

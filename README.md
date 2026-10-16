@@ -1,17 +1,16 @@
-# Pokedex - Ballastlane Tech Exercise
+# Pokedex
 
-A full-stack Pokemon application built to the exercise brief in [`docs/documentation.md`](docs/documentation.md):
+A full-stack Pokemon app I built as a coding practice. The scope I set is in [`docs/documentation.md`](docs/documentation.md): browse the public catalog, save Pokemon locally, and edit those local copies, with auth around the local data.
 
 - **Backend** - Java 17, Spring Boot 3, Clean Architecture, TDD, PostgreSQL, JWT auth, PokeAPI integration with caching.
 - **Frontend** - React 19 + TypeScript, Tailwind CSS, TanStack Query, React Router.
 - **Delivery** - Dockerfiles, `docker-compose.yml`, GitHub Actions CI, seeded demo data and a demo account.
 
 ```text
-ballastlane-tech-exercise/
-  backend/            Spring Boot API (Gradle)
-  frontend/           Vite + React + TypeScript SPA
-  docs/               Brief, architecture, GenAI write-up, presentation notes
-  docker-compose.yml  postgres + backend + frontend
+backend/            Spring Boot API (Gradle)
+frontend/           Vite + React + TypeScript SPA
+docs/               Scope, architecture, GenAI notes, walkthrough notes
+docker-compose.yml  postgres + backend + frontend
 ```
 
 ## Quick start (Docker)
@@ -131,5 +130,5 @@ Dependencies point inwards only (`web` -> `application` -> `domain`; `infrastruc
 ## Other documents
 
 - [`docs/architecture.md`](docs/architecture.md) - design and trade-offs
-- [`docs/genai.md`](docs/genai.md) - GenAI exercise (prompt, output sample, validation)
+- [`docs/genai.md`](docs/genai.md) - how I used generative AI on this practice (prompt, sample output, validation)
 - [`docs/presentation.md`](docs/presentation.md) - talk track, demo script and Q&A prep

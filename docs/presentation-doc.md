@@ -1,21 +1,17 @@
-## Presentation and Code Review
+# Walkthrough
 
-You will be required to present your project to the technical interview panel. During the presentation, you should explain your user story, design choices, the technical architecture, and demonstrate the functionality of the application. This will be done over Google Meets or Zoom and you will screen share either your GitHub repository or IDE. 
+Notes for walking someone through this coding practice: the user stories, the design choices, the architecture, and the running app. Screen share the repository or the IDE, then the app.
 
-After the presentation, the interview panel will conduct a code review of your project. You will be asked to explain your coding decisions and answer any questions related to the code. The interview panel will evaluate your project based on the following criteria: 
+After the walkthrough, the useful questions are the ones about why a decision was made. The checklist I used:
 
+* **Clean Architecture.** Separation of concerns, and domain and use cases that do not depend on the framework or the database.
 
-* Clean Architecture : Your architecture should adhere to Clean Architecture  principles, including separation of concerns and independence of components. 
+* **Testing.** Enough coverage to trust a change. TDD where the rule was easy to state before the code.
 
+* **Code quality.** Organized, readable, and consistent with the rest of the project.
 
-* Application testing: Your project should have sufficient test coverage. Use of TDD is preferable. 
+* **Functionality.** The user stories work, and the browser console stays quiet.
 
+* **Explanation.** A short, concrete walkthrough of the backend and the frontend.
 
-
-* Code quality : Your code should be well-organized, readable, and adhere to best practices. 
-
-* Functionality : Your application should perform as expected in the requirements without errors or bugs. Optional but desired: no warnings in the browser console. 
-
-* Presentation : Your presentation should be clear, concise, and demonstrate a  good understanding of the project and of the main backend and frontend best practices. 
-
-* GenAI tools : Your answers and presentation must show fluency with GenAI tools and prompt engineering, and critical thinking when evaluating AI-generated code.
+* **GenAI.** A clear account of the prompt, what the tool produced, and what I checked or changed before keeping it.
